@@ -3,6 +3,7 @@ package com.ama.prototipo.model.entity;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,12 +20,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import static java.util.stream.Collectors.toList;
+
 @Entity
 @Table(name = "USUARIO")
 public class Usuario implements UserDetails {
@@ -37,6 +34,9 @@ public class Usuario implements UserDetails {
 
     @Column(name = "EMAIL")
     private String email;
+
+    @Column(name = "USERNAME")
+    private String username;
 
     @Column(name = "NOMBRE")
     private String nombre;
@@ -56,8 +56,12 @@ public class Usuario implements UserDetails {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Telefono> telefonos = new LinkedList<Telefono>();
 
+    
     @Column(name = "IMAGEN")
     private String img;
+
+    @Column(name= "ACTIVO")
+    private boolean activo = true;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles =  new LinkedList<>();
@@ -69,7 +73,12 @@ public class Usuario implements UserDetails {
         return this.img;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public void setImg(String img) {
+	
         this.img = img;
     }
 
@@ -179,10 +188,22 @@ public class Usuario implements UserDetails {
         return this.roles.stream().map(SimpleGrantedAuthority::new).collect(toList());
     }
 
+    public boolean isActivo() {
+        return this.activo;
+    }
+
+    public boolean getActivo() {
+        return this.activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+
+
     @Override
     public String getUsername() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.username;
     }
 
     @Override

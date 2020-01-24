@@ -4,9 +4,11 @@ import java.util.LinkedList;
 import java.util.List;
 import com.ama.prototipo.model.entity.Telefono;
 import com.ama.prototipo.model.entity.Usuario;
+import com.ama.prototipo.model.exception.UsuarioNoEncontrado;
 import com.ama.prototipo.model.request.UsuarioRequest;
 import com.ama.prototipo.repository.UsuarioRepository;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,24 +17,22 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class UsuarioService{
+public class UsuarioService {
 
     @Autowired
     UsuarioRepository usuariorepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
     
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-    
-    public void testUsuario(){
+    public Usuario testUsuario(){
         
         Usuario usuario =  new Usuario();
         usuario.setEmail("jorge1234@gmail.com");
-        usuario.setPassword("12345");
+        usuario.setUsername("JIACC");
+        usuario.setPassword(this.passwordEncoder.encode("12345"));
+        //usuario.setPassword("12345");
         LinkedList<String> list = new LinkedList<>();
         list.add("ROLE_USER");
         usuario.setRoles(list);
@@ -40,12 +40,13 @@ public class UsuarioService{
 
         Usuario usuario2 =  new Usuario();
         usuario2.setEmail("jorge1@gmail.com");
-        usuario2.setPassword("12345");
+        usuario2.setPassword(this.passwordEncoder.encode("12345"));
+        //usuario2.setPassword("12345");
+        usuario2.setUsername("JICC");
         LinkedList<String> list2 = new LinkedList<>();
         list2.add("ROLE_ADMIN");
-        list2.add("ROLE_USER");
-        usuario.setRoles(list2);
-        this.usuariorepository.save(usuario);        
+        usuario2.setRoles(list2);
+        return this.usuariorepository.save(usuario2);        
     
     }
 
@@ -66,9 +67,24 @@ public class UsuarioService{
         this.usuariorepository.save(user);
     }
 
+    /*public List<Usuario> getUsuariosPorProyecto(int proyecto){
+        
+    }*/
+
     //test
-    public Usuario getUsuario(){
-        return this.usuariorepository.findById(1).get();
+    public UsuarioRequest getUsuario(int num_usuario){
+        Usuario usuario = this.usuariorepository.findById(num_usuario).orElseThrow(
+          () -> new UsuarioNoEncontrado("El usuario con número:" + num_usuario + "No fue encontrado.") 
+        );
+        
+        UsuarioRequest usuarioRespuesta = new UsuarioRequest();
+        usuarioRespuesta.setNombre(usuario.getNombre());
+        usuarioRespuesta.setApellido_materno(usuario.getApellidomaterno());
+        usuarioRespuesta.setApellido_paterno(usuario.getApellidopaterno());
+        usuarioRespuesta.setPuntos(usuario.getPoints());
+        usuarioRespuesta.setImg(usuario.getImg());
+        usuarioRespuesta.setEmail(usuario.getEmail());
+        return usuarioRespuesta;
         
     }
     //test

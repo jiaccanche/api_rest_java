@@ -4,18 +4,18 @@ import javax.validation.constraints.NotNull;
 
 public class AuthenticationRequest{
     @NotNull(message = "No puede estar vacio el elemento.")
-    private String email;
+    private String username;
     @NotNull(message = "No puede estar vacio el elemento.")
     private String password;
 
     public AuthenticationRequest(){}
 
-    public String getEmail() {
-        return this.email;
+    public String getusername() {
+        return this.username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setusername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
