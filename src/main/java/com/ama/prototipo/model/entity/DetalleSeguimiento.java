@@ -32,4 +32,55 @@ public class DetalleSeguimiento {
     @JoinColumn(name = "SEGUIMIENTO_ID")
     private Seguimiento seguimiento;
 
+
+    public DetalleSeguimiento(){}
+
+    public long getId() {
+        return this.id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getOrden() {
+        return this.orden;
+    }
+
+    public void setOrden(long orden) {
+        this.orden = orden;
+    }
+
+    public String getDescripcion() {
+        return this.descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getIcono() {
+        return this.icono;
+    }
+
+    public void setIcono(String icono) {
+        this.icono = icono;
+    }
+
+    public LocalDateTime getFechahora_actual() {
+        return this.fechahora_actual;
+    }
+
+    public void setFechahora_actual(LocalDateTime fechahora_actual) {
+        this.fechahora_actual = fechahora_actual;
+    }
+
+    public Seguimiento getSeguimiento() {
+        return this.seguimiento;
+    }
+
+    public void setSeguimiento(Seguimiento seguimiento) {
+        this.seguimiento = seguimiento;
+    }
+
 }
